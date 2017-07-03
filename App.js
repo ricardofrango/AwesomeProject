@@ -1,17 +1,35 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, TextInput, View, Button, Alert } from 'react-native';
+import MyApi from './api/MyApi'
+
 
 export default class AwesomeProject extends Component {
 
+  var state;
+
+  constructor(props){
+    super(props)
+
+    this.state = {
+      username: '',
+      password: '',
+    };
+  }
+
   onLoginClick() {
-    Alert.alert('on Press!');
+    const api = new MyApi();
+
+    api.login(this.state.username,this.state.password)
+    .then(response => response.access_token)   // Successfully logged in
+    .then(access_token => saveToken(access_token))    // Remember your credentials
+    .catch(err => alert(err.message));
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <TextInput style={styles.textInputStyle} underlineColorAndroid='transparent'/>
-        <TextInput style={styles.textInputStyle} underlineColorAndroid='transparent'/>
+        <TextInput onChangeText={(text) => this.setState({username:text})} style={styles.textInputStyle} underlineColorAndroid='transparent'/>
+        <TextInput onChangeText={(text) => this.setState({password:text})} style={styles.textInputStyle} underlineColorAndroid='transparent'/>
         <Button style={styles.buttonStyle} title="Login" onPress={this.onLoginClick}/>
       </View>
     );
