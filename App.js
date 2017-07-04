@@ -20,10 +20,12 @@ export default class AwesomeProject extends Component {
 
     ///console.log(this.state.username);
 
-    (async() => {
-      var response = await api.login("ricardo_frango@hotmail.com","123Qwe!")  // Successfully logged in
-      console.log(response);
-    })();
+    api.login("ricardo_frango@hotmail.com","123Qwe!")
+    .then(function(data) {
+      console.log(data.token_type + " " + data.access_token);
+      console.log(data.userName)
+    })
+    .catch(e => console.log("Booo"))  // Successfully logged in
 
   }
 

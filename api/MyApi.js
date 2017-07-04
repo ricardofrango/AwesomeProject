@@ -33,7 +33,7 @@ export default class MyApi extends RestClient {
     }
     formBody = formBody.join("&");
 
-    fetch("http://devprimetableapp.azurewebsites.net/Token", {
+    return fetch("http://devprimetableapp.azurewebsites.net/Token", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -47,17 +47,7 @@ export default class MyApi extends RestClient {
         'gpsLongitude': '-9.142685'
       },
       body: formBody
-    }).then(function(response) {
-      var contentType = response.headers.get("content-type");
-      if(contentType && contentType.indexOf("application/json") !== -1) {
-        return response.json().then(function(json) {
-          // process your JSON further
-          return json;
-        });
-      }
-
-      return null;
-    });
+    }).then(r => r.json());
   }
 
 
