@@ -20,9 +20,9 @@ export default class MyApi extends RestClient {
 
   login(username, password) {
     var details = {
-      'userName': username,
-      'password': password,
-      'grant_type': 'password'
+        'userName': username,
+        'password': password,
+        'grant_type': 'password'
     };
 
     var formBody = [];
@@ -33,14 +33,31 @@ export default class MyApi extends RestClient {
     }
     formBody = formBody.join("&");
 
-    return fetch("http://devprimetableapp.azurewebsites.net/Token", {
+    fetch("http://devprimetableapp.azurewebsites.net/Token", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'appId': 'PTApp',
+        'appVersion': '1.0',
+        'osVersion': '1.0',
+        'deviceId': '01234567889',
+        'platform': 'Android',
+        'gpsLatitude': '38.736946',
+        'gpsLongitude': '-9.142685'
       },
       body: formBody
-    })
+    }).then(function(response) {
+      var contentType = response.headers.get("content-type");
+      if(contentType && contentType.indexOf("application/json") !== -1) {
+        return response.json().then(function(json) {
+          // process your JSON further
+          return json;
+        });
+      }
+
+      return null;
+    });
   }
 
 
