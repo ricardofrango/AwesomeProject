@@ -17,11 +17,33 @@ export default class MyApi extends RestClient {
       simulatedDelay: 2000
     });
   }
-  // Now you can write your own methods easily
+
   login(username, password) {
-    // Returns a Promise with the response.
-    return this.POST('/Token', { username, password });
+    var details = {
+      'userName': username,
+      'password': password,
+      'grant_type': 'password'
+    };
+
+    var formBody = [];
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    return fetch("http://devprimetableapp.azurewebsites.net/Token", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formBody
+    })
   }
+
+
   getCurrentUser () {
     // If the request is successful, you can return the expected object
     // instead of the whole response.

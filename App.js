@@ -5,31 +5,40 @@ import MyApi from './api/MyApi'
 
 export default class AwesomeProject extends Component {
 
-  var state;
-
   constructor(props){
     super(props)
 
     this.state = {
-      username: '',
-      password: '',
+      username: 'ricardo_frango@hotmail.com',
+      password: '123Qwe!',
     };
+
   }
 
   onLoginClick() {
     const api = new MyApi();
 
-    api.login(this.state.username,this.state.password)
+    ///console.log(this.state.username);
+
+    api.login("ricardo_frango@hotmail.com","123Qwe!")
     .then(response => response.access_token)   // Successfully logged in
     .then(access_token => saveToken(access_token))    // Remember your credentials
-    .catch(err => alert(err.message));
+    .catch(err => console.log(err));
+  }
+
+  setUserName(username) {
+    this.state.username=username;
+  }
+
+  setPassword(password) {
+    this.state.password=password;
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <TextInput onChangeText={(text) => this.setState({username:text})} style={styles.textInputStyle} underlineColorAndroid='transparent'/>
-        <TextInput onChangeText={(text) => this.setState({password:text})} style={styles.textInputStyle} underlineColorAndroid='transparent'/>
+        <TextInput onChangeText={(text) => this.setUserName({username:text})} style={styles.textInputStyle} underlineColorAndroid='transparent'/>
+        <TextInput onChangeText={(text) => this.setPassword({password:text})} style={styles.textInputStyle} underlineColorAndroid='transparent'/>
         <Button style={styles.buttonStyle} title="Login" onPress={this.onLoginClick}/>
       </View>
     );
